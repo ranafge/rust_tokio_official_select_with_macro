@@ -224,16 +224,23 @@ async fn some_async_workd() {
 async fn main() {
     let sleep = time::sleep(Duration::from_millis(20));
     tokio::pin!(sleep);
+    let add = async { move || -> i32{ 
+        println!(" a + b = {}", 1 + 1);
+        1+1
+    }};
+   
 
     loop {
-        tokio::select! {
+        let var_name = tokio::select! {
             _= &mut sleep => {
                 println!("operaton time out");
                 break;
             }
             _= some_async_workd() => {
-                println!("operatio completed")
+                println!("operation completed")
             }
-        }
+           
+        };
+        var_name
     }
 }
